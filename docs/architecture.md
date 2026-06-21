@@ -1,8 +1,8 @@
-# TrackQA — Architecture (v1)
+# VeriOps — Architecture (v1)
 
 ## Overview
 
-TrackQA is split into a React SPA, a FastAPI backend, a PostgreSQL database, and an
+VeriOps is split into a React SPA, a FastAPI backend, a PostgreSQL database, and an
 edge Nginx that terminates TLS and routes traffic. Redis is present for future rate
 limiting and caching. Everything runs under Docker Compose on a single internal VM in
 v1, but no design decision blocks moving to multiple backend replicas or managed

@@ -1,4 +1,4 @@
-# TrackQA — v1 Vertical Slice
+# VeriOps — v1 Vertical Slice
 
 An internal test & defect tracking platform (a focused mix of TestRail and YouTrack).
 This is the **first version**: a real, runnable end-to-end slice — not a demo, not a
@@ -39,7 +39,7 @@ Admin → Settings → Integrations; no integration UI appears in the normal wor
 ## Repository layout
 
 ```
-trackqa/
+veriops/
 ├── backend/            FastAPI app (api / core / models / schemas / services / repositories)
 │   ├── app/
 │   ├── alembic/        migrations (0001_initial)
@@ -62,7 +62,7 @@ trackqa/
 Prerequisites: Docker + Docker Compose, and `openssl` for the self-signed cert.
 
 ```bash
-git clone <your-repo> trackqa && cd trackqa
+git clone <your-repo> veriops && cd veriops
 
 # Edit secrets first:
 cp .env.example .env

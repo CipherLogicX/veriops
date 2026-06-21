@@ -1,4 +1,4 @@
-# TrackQA — Deployment (v1)
+# VeriOps — Deployment (v1)
 
 Target: a single internal VM running Docker + Docker Compose.
 
@@ -11,7 +11,7 @@ Target: a single internal VM running Docker + Docker Compose.
 ## First deployment
 
 ```bash
-git clone <your-repo> trackqa && cd trackqa
+git clone <your-repo> veriops && cd veriops
 cp .env.example .env
 # Edit .env: set JWT_SECRET_KEY, FIRST_ADMIN_*, POSTGRES_PASSWORD, CORS_ORIGINS
 bash deployment/scripts/setup.sh
@@ -34,12 +34,12 @@ log in with the first-admin credentials.
 Replace the generated files with CA-issued ones, keeping the names:
 
 ```
-deployment/nginx/ssl/trackqa.crt
-deployment/nginx/ssl/trackqa.key
+deployment/nginx/ssl/veriops.crt
+deployment/nginx/ssl/veriops.key
 ```
 
 Then `docker compose restart nginx`. Update `server_name` in
-`deployment/nginx/conf.d/trackqa.conf` to your hostname for stricter matching.
+`deployment/nginx/conf.d/veriops.conf` to your hostname for stricter matching.
 
 ## Day-2 operations
 
@@ -49,10 +49,10 @@ bash deployment/scripts/healthcheck.sh
 
 # Database backup (gzipped pg_dump, keeps last 14)
 bash deployment/scripts/backup.sh
-#   schedule via cron, e.g.:  0 2 * * *  /path/trackqa/deployment/scripts/backup.sh
+#   schedule via cron, e.g.:  0 2 * * *  /path/veriops/deployment/scripts/backup.sh
 
 # Restore from a dump (prompts for confirmation)
-bash deployment/scripts/restore.sh backups/trackqa_YYYYMMDD_HHMMSS.sql.gz
+bash deployment/scripts/restore.sh backups/veriops_YYYYMMDD_HHMMSS.sql.gz
 
 # Truncate container logs to reclaim disk
 bash deployment/scripts/rotate-logs.sh
@@ -69,11 +69,11 @@ bash deployment/scripts/healthcheck.sh
 ## Data & persistence
 
 Named Docker volumes:
-- `trackqa_pgdata` — PostgreSQL data
-- `trackqa_redisdata` — Redis AOF
-- `trackqa_uploads` — attachment storage (designed to move to S3/MinIO later)
+- `veriops_pgdata` — PostgreSQL data
+- `veriops_redisdata` — Redis AOF
+- `veriops_uploads` — attachment storage (designed to move to S3/MinIO later)
 
-Backups cover the database. For a full migration, also snapshot `trackqa_uploads`.
+Backups cover the database. For a full migration, also snapshot `veriops_uploads`.
 
 ## Scaling later (not required for v1)
 
