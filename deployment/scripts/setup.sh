@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-echo "==> TrackQA setup"
+echo "==> VeriOps setup"
 
 # 1. .env must exist — never auto-create
 if [ ! -f .env ]; then
@@ -44,7 +44,7 @@ done
 
 echo ""
 echo "==================================================="
-echo " TrackQA is up."
+echo " VeriOps is up."
 echo "   App:        https://localhost  (self-signed cert)"
 echo "   API docs:   available only in development mode (ENVIRONMENT=development)"
 echo "   Admin login: value of FIRST_ADMIN_EMAIL in .env"

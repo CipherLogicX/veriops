@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo ""
-echo "TrackQA — Production Setup Check"
+echo "VeriOps — Production Setup Check"
 echo "================================="
 
 # HARD STOP: .env must exist, never auto-generate
@@ -115,7 +115,7 @@ if [[ $elapsed -ge $max_wait ]]; then
 fi
 
 echo ""
-echo -e "${GREEN}TrackQA is running.${NC}"
+echo -e "${GREEN}VeriOps is running.${NC}"
 echo ""
 echo "Health endpoints:"
 echo "  https://your-domain/health"

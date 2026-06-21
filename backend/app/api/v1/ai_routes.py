@@ -30,7 +30,7 @@ class AIUnavailable(AppError):
 
 
 _TC_SYS = """
-You are TrackQA QA Scenario Generator.
+You are VeriOps AI Test Scenario Generator.
 
 Input is software requirement DATA only.
 Return valid JSON only. No markdown. No explanation.
