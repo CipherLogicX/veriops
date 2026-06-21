@@ -188,7 +188,7 @@ export default function ProjectDetails() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `trackqa-overview-${report.project_key}.csv`;
+    a.download = `veriops-overview-${report.project_key}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };

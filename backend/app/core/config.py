@@ -14,7 +14,7 @@ _WEAK_PW = {"admin123","Admin123","changeme","password","ChangeMe!2025Abc","chan
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    APP_NAME: str = "TrackQA"
+    APP_NAME: str = "VeriOps"
     API_V1_PREFIX: str = "/api/v1"
     ENVIRONMENT: str = "development"
     DEBUG: bool = False

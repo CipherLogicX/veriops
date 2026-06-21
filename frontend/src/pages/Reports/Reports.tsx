@@ -57,7 +57,7 @@ export default function Reports({ projectId }: { projectId: string }) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `trackqa-report-${report.project_key}.csv`;
+    a.download = `veriops-report-${report.project_key}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };

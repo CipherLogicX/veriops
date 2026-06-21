@@ -1,4 +1,4 @@
-"""TrackQA FastAPI application."""
+"""VeriOps FastAPI application."""
 import logging, time, uuid
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware

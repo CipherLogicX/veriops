@@ -1,11 +1,11 @@
-# VeriOps — v1 Vertical Slice
+# VeriOps
 
-An internal test & defect tracking platform (a focused mix of TestRail and YouTrack).
+A quality operations platform for test management, test execution, defect tracking, reporting, and AI-assisted test generation.
 This is the **first version**: a real, runnable end-to-end slice — not a demo, not a
 static page. It proves the architecture and the core QA workflow so the remaining
 modules can be added one at a time without rewriting the foundation.
 
-## What works in v1
+## Core Capabilities
 
 A user can, end to end:
 

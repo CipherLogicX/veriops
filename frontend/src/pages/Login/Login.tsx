@@ -45,10 +45,10 @@ export default function Login() {
       }}>
         <div style={{ marginBottom: 28 }}>
           <div style={{ fontSize: 34, fontWeight: 900, color: "#f8fafc", letterSpacing: "-0.04em" }}>
-            Track<span style={{ color: "#2563eb" }}>QA</span>
+            Veri<span style={{ color: "#2563eb" }}>Ops</span>
           </div>
           <p style={{ margin: "8px 0 0", color: "#94a3b8", fontSize: 14 }}>
-            Internal QA, test case, run, and defect management.
+            Quality operations, test execution, defects, reporting, and AI-assisted testing.
           </p>
         </div>
 
