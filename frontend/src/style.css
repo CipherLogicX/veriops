@@ -1,0 +1,942 @@
+:root{
+  --navy:#08111f;
+  --blue:#2563eb;
+  --cyan:#06b6d4;
+  --purple:#7c3aed;
+  --green:#10b981;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#64748b;
+  --line:#e5e7eb;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button{border:0;border-radius:12px;padding:11px 16px;background:linear-gradient(135deg,var(--blue),var(--purple));color:white;font-weight:800;cursor:pointer;box-shadow:0 10px 25px rgba(37,99,235,.18)}
+button:hover{transform:translateY(-1px)}
+button:disabled{opacity:.6;cursor:not-allowed}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;background:#fff}
+textarea{min-height:120px}
+label{display:block;margin:14px 0 7px;font-weight:800;color:#334155}
+.login-shell{min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 10%,#1d4ed8,transparent 30%),radial-gradient(circle at 80% 20%,#7c3aed,transparent 30%),var(--navy)}
+.login-card{width:min(430px,92vw);background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.25);border-radius:28px;padding:34px;box-shadow:0 30px 90px rgba(0,0,0,.35)}
+.mark{display:inline-block;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:900;letter-spacing:2px;border-radius:14px;padding:9px 13px;margin-bottom:18px}
+.login-card h1{margin:0;font-size:34px}
+.login-card p{color:var(--muted);margin:8px 0 24px}
+.error{margin:14px 0;color:#b91c1c;background:#fee2e2;border:1px solid #fecaca;border-radius:12px;padding:12px}
+.error.wide{margin-bottom:18px}
+.app-shell{display:flex;min-height:100vh}
+.sidebar{width:280px;background:linear-gradient(180deg,#08111f,#101827);color:white;padding:22px;position:fixed;top:0;bottom:0}
+.brand{display:flex;align-items:center;gap:10px;font-size:22px;margin-bottom:24px}
+.brand span{background:linear-gradient(135deg,var(--cyan),var(--blue));padding:8px 10px;border-radius:12px;font-weight:900;letter-spacing:1px}
+.brand strong{font-size:24px}
+.profile{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin-bottom:20px}
+.profile small{display:block;color:#aab6c8;margin-top:5px}
+.sidebar button{display:block;width:100%;text-align:left;background:transparent;box-shadow:none;color:#cbd5e1;margin:6px 0;padding:12px;border-radius:12px}
+.sidebar button.active,.sidebar button:hover{background:rgba(255,255,255,.1);color:white}
+.sidebar .logout{margin-top:24px;color:#fecaca}
+.workspace{margin-left:280px;padding:28px;width:calc(100% - 280px)}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.topbar h1{margin:0;font-size:30px}
+.topbar p{margin:5px 0 0;color:var(--muted)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:20px}
+.metrics div{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 10px 30px rgba(15,23,42,.05)}
+.metrics span{color:var(--muted);font-weight:800}
+.metrics b{display:block;font-size:34px;margin-top:10px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 14px 40px rgba(15,23,42,.06)}
+.hero{background:linear-gradient(135deg,#eff6ff,#f5f3ff,#ecfeff)}
+.panel h2{margin:0 0 10px}
+.panel p{color:var(--muted)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:14px;border-bottom:1px solid var(--line)}
+th{color:#475569;background:#f8fafc}
+.badge{display:inline-block;background:#dcfce7;color:#166534;border-radius:999px;padding:5px 10px;font-weight:900;font-size:12px}
+.empty{padding:35px;text-align:center;border:1px dashed #cbd5e1;border-radius:18px;color:var(--muted)}
+.form{max-width:720px}
+.settings-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+.settings-grid div{border:1px solid var(--line);border-radius:16px;padding:18px;font-weight:900}
+.settings-grid span{float:right;color:var(--blue)}
+@media(max-width:900px){.sidebar{position:static;width:100%}.app-shell{display:block}.workspace{margin-left:0;width:100%}.metrics{grid-template-columns:1fr}}
+
+/* Modal center fix */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 9999;
+}
+
+.modal-card {
+  width: min(760px, 92vw);
+  max-height: 84vh;
+  overflow: auto;
+  margin: 0;
+}
+
+.modal-card pre {
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+/* Correct modal centering for existing Modal.tsx */
+.modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+  background: rgba(0, 0, 0, 0.72) !important;
+  z-index: 99999 !important;
+}
+
+.modal {
+  position: relative !important;
+  width: min(780px, 92vw) !important;
+  max-height: 84vh !important;
+  overflow: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.modal h2 {
+  margin-top: 0 !important;
+}
+
+.modal pre {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  font-family: inherit !important;
+  line-height: 1.6 !important;
+}
+
+/* FORCE FIX: centered modal + stable test cases table */
+.modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 24px !important;
+  background: rgba(0, 0, 0, 0.72) !important;
+  z-index: 999999 !important;
+}
+
+.modal-overlay > .modal {
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  width: min(820px, 92vw) !important;
+  max-height: 82vh !important;
+  overflow: auto !important;
+}
+
+/* FINAL UI FIX: smoother modal + flexible table */
+.card { overflow: hidden; }
+
+.modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 32px !important;
+  background: rgba(0, 0, 0, 0.68) !important;
+  z-index: 999999 !important;
+}
+
+.modal-overlay > .modal {
+  width: min(720px, 90vw) !important;
+  max-height: 78vh !important;
+  overflow: auto !important;
+  padding: 28px !important;
+  border-radius: 18px !important;
+  margin: 0 !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,.45) !important;
+}
+
+.modal h2 {
+  font-size: 20px !important;
+  margin: 0 0 20px 0 !important;
+}
+
+.modal .field {
+  margin-bottom: 18px !important;
+}
+
+.modal .field label {
+  display: block !important;
+  margin-bottom: 6px !important;
+  opacity: .85 !important;
+}
+
+.modal pre {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 12px !important;
+  padding: 12px !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  line-height: 1.55 !important;
+}
+
+.modal-actions {
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin-top: 22px !important;
+}
+
+/* TQ TABLE REACT RESIZE FIX */
+.tq-table-card {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  border-radius: 10px !important;
+}
+
+.tq-table-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+
+.tq-table {
+  width: 100% !important;
+  min-width: 900px !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+}
+
+.tq-table th,
+.tq-table td {
+  padding: 14px !important;
+  border-right: 1px solid rgba(148, 163, 184, 0.28) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35) !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.tq-table th {
+  position: relative !important;
+  background: rgba(148, 163, 184, 0.08) !important;
+}
+
+.tq-resizer {
+  position: absolute !important;
+  top: 0 !important;
+  right: -3px !important;
+  width: 8px !important;
+  height: 100% !important;
+  cursor: col-resize !important;
+  z-index: 5 !important;
+}
+
+.tq-resizer:hover {
+  background: rgba(0, 229, 255, 0.35) !important;
+}
+
+.tq-pagination {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.35) !important;
+}
+
+.tq-pagination select {
+  width: 180px !important;
+  max-width: 180px !important;
+  height: 36px !important;
+  flex: 0 0 180px !important;
+}
+
+.tq-pagination button {
+  height: 36px !important;
+  min-width: 64px !important;
+}
+
+.tq-pagination > *:first-child {
+  margin-right: 0 !important;
+}
+
+
+
+/* TQ TABLE HEADER/PAGINATION POLISH */
+.tq-table th,
+.tq-table th button,
+.tq-th-button {
+  background: transparent !important;
+  color: #eaf6ff !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.tq-table th {
+  background: rgba(148, 163, 184, 0.08) !important;
+}
+
+.tq-table th button,
+.tq-th-button {
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.tq-resizer {
+  position: absolute !important;
+  top: 0 !important;
+  right: -4px !important;
+  width: 8px !important;
+  height: 100% !important;
+  cursor: col-resize !important;
+  z-index: 10 !important;
+}
+
+.tq-resizer:hover {
+  background: rgba(0, 229, 255, 0.35) !important;
+}
+
+.tq-pagination {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 9px 12px !important;
+  min-height: 42px !important;
+}
+
+.tq-pagination select {
+  width: 118px !important;
+  max-width: 118px !important;
+  flex: 0 0 118px !important;
+  height: 30px !important;
+  padding: 0 8px !important;
+}
+
+.tq-pagination button {
+  height: 30px !important;
+  min-width: 54px !important;
+  padding: 0 10px !important;
+}
+
+
+
+/* TQ TABLE FINAL PATCH: no status dots, full dividers, compact rows only */
+.tq-table-card {
+  overflow: hidden !important;
+}
+
+.tq-table-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+.tq-table {
+  width: 100% !important;
+  max-width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+}
+
+.tq-table th,
+.tq-table td {
+  border-right: 1px solid rgba(148, 163, 184, 0.34) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.tq-table th:first-child,
+.tq-table td:first-child {
+  border-left: 0 !important;
+}
+
+.tq-table th:last-child,
+.tq-table td:last-child {
+  border-right: 0 !important;
+}
+
+.tq-table th {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.tq-table td {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.tq-table th:nth-child(5),
+.tq-table td:nth-child(5) {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  min-width: 120px !important;
+  width: 120px !important;
+  text-align: center !important;
+}
+
+.tq-table th:nth-child(5) .tq-resizer,
+.tq-table td:nth-child(5) .tq-resizer {
+  display: none !important;
+  width: 0 !important;
+}
+
+.tq-resizer {
+  position: absolute !important;
+  top: 0 !important;
+  right: -4px !important;
+  width: 8px !important;
+  height: 100% !important;
+  cursor: col-resize !important;
+  z-index: 20 !important;
+}
+
+.tq-resizer:hover {
+  background: rgba(0, 229, 255, 0.35) !important;
+}
+
+.tq-pagination {
+  padding: 8px 12px !important;
+  gap: 10px !important;
+  min-height: 38px !important;
+}
+
+.tq-pagination select {
+  width: 120px !important;
+  max-width: 120px !important;
+  flex: 0 0 120px !important;
+  height: 32px !important;
+  font-size: 13px !important;
+}
+
+.tq-pagination button {
+  height: 32px !important;
+  min-width: 56px !important;
+  font-size: 13px !important;
+}
+
+.tq-pagination span {
+  font-size: 14px !important;
+}
+
+/* TQ STATUS COLUMN HARD FIX */
+.tq-table th:last-child,
+.tq-table td:last-child {
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  border-right: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.tq-table th:last-child::after,
+.tq-table th:last-child::before,
+.tq-table td:last-child::after,
+.tq-table td:last-child::before {
+  display: none !important;
+  content: none !important;
+}
+
+.tq-table th:last-child .tq-resizer,
+.tq-table td:last-child .tq-resizer {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  pointer-events: none !important;
+}
+
+.tq-table th,
+.tq-table td {
+  border-right: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.tq-table thead th {
+  border-top: 0 !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.tq-table tbody td {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.tq-table {
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+/* TQ REMOVE NATIVE RESIZE + STATUS DOTS FIX */
+.tq-table th {
+  resize: none !important;
+  overflow: hidden !important;
+}
+
+.tq-table th,
+.tq-table td {
+  background-clip: padding-box !important;
+  border-right: 1px solid rgba(148, 163, 184, 0.38) !important;
+}
+
+.tq-table th:last-child,
+.tq-table td:last-child {
+  resize: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  border-right: 1px solid rgba(148, 163, 184, 0.38) !important;
+}
+
+.tq-table th:last-child .tq-resizer {
+  display: none !important;
+}
+
+.tq-table td:last-child,
+.tq-table td:last-child * {
+  text-overflow: clip !important;
+  overflow: visible !important;
+}
+
+.tq-table-card {
+  border: 1px solid rgba(148, 163, 184, 0.38) !important;
+}
+
+/* TQ FULL COLUMN DIVIDERS FINAL */
+.tq-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.tq-table th,
+.tq-table td {
+  border-right: 1px solid rgba(148, 163, 184, 0.38) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.38) !important;
+}
+
+.tq-table th {
+  overflow: visible !important;
+}
+
+.tq-table th::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 1px !important;
+  height: 100% !important;
+  background: rgba(148, 163, 184, 0.38) !important;
+  pointer-events: none !important;
+}
+
+.tq-table th:last-child::after {
+  display: none !important;
+}
+
+.tq-resizer {
+  position: absolute !important;
+  top: 0 !important;
+  right: -5px !important;
+  width: 10px !important;
+  height: 100% !important;
+  cursor: col-resize !important;
+  background: transparent !important;
+  border: 0 !important;
+  z-index: 20 !important;
+}
+
+.tq-resizer::before,
+.tq-resizer::after {
+  display: none !important;
+  content: none !important;
+}
+
+.tq-table th:last-child .tq-resizer {
+  display: none !important;
+}
+
+/* TQ MODAL CLEAN FIX */
+.modal {
+  width: 860px !important;
+  max-width: 92vw !important;
+  max-height: 82vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.modal .field {
+  margin-bottom: 16px !important;
+}
+
+.modal .field label {
+  display: block !important;
+  margin-bottom: 6px !important;
+  color: #b8d7ff !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.modal pre {
+  margin: 0 !important;
+  padding: 12px 14px !important;
+  border-radius: 10px !important;
+  background: rgba(255,255,255,.035) !important;
+  border: 1px solid rgba(148,163,184,.18) !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  overflow-x: hidden !important;
+  line-height: 1.55 !important;
+  font-size: 13px !important;
+}
+
+.modal-actions {
+  margin-top: 18px !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+}
+
+.modal-actions button {
+  min-width: 96px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  background: rgba(0,229,255,.12) !important;
+  border: 1px solid rgba(0,229,255,.35) !important;
+  color: #dffcff !important;
+  font-weight: 800 !important;
+}
+
+/* TQ BASIC TABLES GLOBAL */
+.tq-basic-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  overflow: hidden !important;
+}
+
+.tq-basic-table th,
+.tq-basic-table td {
+  padding: 13px 14px !important;
+  border-right: 1px solid rgba(148, 163, 184, 0.34) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.34) !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.tq-basic-table th {
+  background: rgba(148, 163, 184, 0.08) !important;
+  color: #eaf6ff !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+}
+
+.tq-basic-table th:last-child,
+.tq-basic-table td:last-child {
+  border-right: 0 !important;
+}
+
+.tq-basic-table tbody tr {
+  cursor: pointer;
+}
+
+.tq-basic-table tbody tr:hover {
+  background: rgba(0, 229, 255, 0.08) !important;
+}
+
+.tq-basic-table td:last-child,
+.tq-basic-table th:last-child {
+  text-align: center !important;
+}
+
+/* pagination/select consistency outside TestCases */
+.card select,
+.page-card select {
+  max-width: 180px;
+}
+
+/* TQ GLOBAL TABLES + PAGINATION CLEAN */
+.card table:not(.tq-table),
+.page-card table:not(.tq-table),
+.projects-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.card table:not(.tq-table) th,
+.card table:not(.tq-table) td,
+.page-card table:not(.tq-table) th,
+.page-card table:not(.tq-table) td,
+.projects-table th,
+.projects-table td {
+  padding: 13px 14px !important;
+  border-right: 1px solid rgba(148, 163, 184, 0.36) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.36) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  vertical-align: middle !important;
+}
+
+.card table:not(.tq-table) th,
+.page-card table:not(.tq-table) th,
+.projects-table th {
+  background: rgba(148, 163, 184, 0.08) !important;
+  color: #eaf6ff !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+}
+
+.card table:not(.tq-table) th:last-child,
+.card table:not(.tq-table) td:last-child,
+.page-card table:not(.tq-table) th:last-child,
+.page-card table:not(.tq-table) td:last-child,
+.projects-table th:last-child,
+.projects-table td:last-child {
+  border-right: 0 !important;
+  text-align: center !important;
+}
+
+.card table:not(.tq-table) tbody tr:hover,
+.page-card table:not(.tq-table) tbody tr:hover,
+.projects-table tbody tr:hover {
+  background: rgba(0, 229, 255, 0.08) !important;
+}
+
+/* any pagination bar inside cards */
+.card > div:has(select):has(button),
+.page-card > div:has(select):has(button),
+.tq-pagination {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.card > div:has(select):has(button) select,
+.page-card > div:has(select):has(button) select,
+.tq-pagination select {
+  width: 128px !important;
+  max-width: 128px !important;
+  flex: 0 0 128px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+}
+
+.card > div:has(select):has(button) button,
+.page-card > div:has(select):has(button) button,
+.tq-pagination button {
+  height: 38px !important;
+  min-width: 72px !important;
+  border-radius: 10px !important;
+}
+
+.card > div:has(select):has(button) span,
+.page-card > div:has(select):has(button) span,
+.tq-pagination span {
+  font-size: 14px !important;
+  white-space: nowrap !important;
+}
+
+/* TQ PAGINATION FINAL CLEAN */
+.tq-pagination {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.tq-pagination > * {
+  margin: 0 !important;
+}
+
+.tq-pagination select {
+  width: 128px !important;
+  max-width: 128px !important;
+  flex: 0 0 128px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+}
+
+.tq-pagination button {
+  height: 38px !important;
+  min-width: 72px !important;
+  border-radius: 10px !important;
+}
+
+.tq-pagination span {
+  font-size: 14px !important;
+  white-space: nowrap !important;
+}
+
+/* TQ SAME TABLE FAMILY */
+.tq-same-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.tq-same-table th,
+.tq-same-table td {
+  padding: 14px !important;
+  border-right: 1px solid rgba(148, 163, 184, 0.38) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.38) !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.tq-same-table th {
+  background: rgba(148, 163, 184, 0.08) !important;
+  color: #eaf6ff !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+}
+
+.tq-same-table th:last-child,
+.tq-same-table td:last-child {
+  border-right: 0 !important;
+  text-align: center !important;
+}
+
+.tq-same-table tbody tr:hover {
+  background: rgba(0, 229, 255, 0.08) !important;
+}
+
+.tq-pagination {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.tq-pagination select {
+  width: 128px !important;
+  max-width: 128px !important;
+  flex: 0 0 128px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+}
+
+.tq-pagination button {
+  height: 38px !important;
+  min-width: 72px !important;
+  border-radius: 10px !important;
+}
+
+.tq-pagination .muted,
+.tq-pagination span {
+  min-width: auto !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+/* TQ ALL TABLES FINAL UNIFIED */
+.tq-table-card {
+  padding: 14px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  border-radius: 10px !important;
+}
+
+.tq-same-table,
+.tq-basic-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.tq-same-table th,
+.tq-same-table td,
+.tq-basic-table th,
+.tq-basic-table td {
+  padding: 14px !important;
+  border-right: 1px solid rgba(148, 163, 184, 0.38) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.38) !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.tq-same-table th,
+.tq-basic-table th {
+  background: rgba(148, 163, 184, 0.08) !important;
+  color: #eaf6ff !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+}
+
+.tq-same-table th:last-child,
+.tq-same-table td:last-child,
+.tq-basic-table th:last-child,
+.tq-basic-table td:last-child {
+  border-right: 0 !important;
+  text-align: center !important;
+}
+
+.tq-same-table tbody tr:hover,
+.tq-basic-table tbody tr:hover {
+  background: rgba(0, 229, 255, 0.08) !important;
+}
+
+.tq-pagination {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.34) !important;
+}
+
+.tq-pagination > * {
+  margin: 0 !important;
+}
+
+.tq-pagination select {
+  width: 128px !important;
+  max-width: 128px !important;
+  flex: 0 0 128px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+}
+
+.tq-pagination button {
+  height: 38px !important;
+  min-width: 72px !important;
+  border-radius: 10px !important;
+}
+
+.tq-pagination span,
+.tq-pagination .muted {
+  white-space: nowrap !important;
+  min-width: auto !important;
+  text-align: center !important;
+}
